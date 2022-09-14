@@ -1,0 +1,61 @@
+html, body{
+  height:100%;
+  width: 100%;
+  padding:0;
+  margin: 0; 
+}
+body{
+  display: flex;
+}
+.container{
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  padding:1rem;
+  gap:1rem;
+  border: 1px solid black;
+  border-radius: 2%; 
+}
+
+.toolbox{
+  background-color: aliceblue;
+  border: 1px solid black;
+  border-radius: 2%;
+  display: flex;
+  gap:1rem;
+  flex-direction: column;
+}
+
+.dropzone{
+  background-color: aliceblue;
+  border: 1px solid black;
+  border-radius: 2%;
+  display: flex;
+  flex-wrap: wrap;
+  gap:1rem; 
+}
+
+.box{
+  height: 100px;
+  width: 100px;
+}
+
+.blue{
+  background-color: blue;
+}
+
+.aqua{
+  background-color: aqua;
+}
+
+.red{
+  background-color: red;
+}
+
+.yellow{
+  background-color: yellow;
+}
+
+.green{
+  background-color: green;
+}
