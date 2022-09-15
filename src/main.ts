@@ -1,24 +1,25 @@
-import { Draggable } from "./dndLaforce";
+import { Laforce } from "./dndLaforce";
 
-Draggable(".toolbox .box",{
+Laforce.drag(".toolbox .box",{
   mode: "copy",
   dragListeners: {
     onDragStart: (e) => {
-      console.log("start the drag sir")
+      console.log("start the drag sir ")
     },
     onDragging: (e) => {
-      //  console.log("we are dragging")
+      console.log("we are dragging")
     },
     onDragEnd: (e) => {
       console.log("stop the drag good sir");
     }
   }
-}).addDropZone(".dropzone .blue", {
+})
+.drop(".dropzone .box", {
   dropListeners: {
-    onDropZoneLeave: (drag, dragElement, drop) => {
+    onDropZoneLeave: (drag, dragElement, drop) => { 
       drop.classList.remove("green");
     },
-    onDropZoneEntered: (drag, dragElement, drop) => {
+    onDropZoneEntered: (drag, dragElement, drop) => { 
       drop.classList.add("green");
     },
     onDrop: (drag, dragElement, drop) => {

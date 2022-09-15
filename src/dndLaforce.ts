@@ -1,47 +1,38 @@
-import { DragOptions, DropZoneOptions, InitialDragOptions, initialDropZoneOptions } from "./dndLaforce.types";
-import { DragState } from "./DragState";
+import { DragOptions, DropOptions as DropOptions, InitialDragOptions as initialDragOptions, initialDropZoneOptions as initialDropOptions } from "./dndLaforce.types"; 
+import { DnDModel } from "./models/dndModel";
 
-const dragStates: DragState[] = [];
+const dndModels: DnDModel[] = [];
 
 const mouseUpDragHandler = (e: MouseEvent) => {
-    dragStates.filter(state => state.isMouseDown).map(state => state.stopDragging(e));
-}
-
-const mouseMoveDragHandler = (e: MouseEvent) => {
-    dragStates.forEach(state => { 
-        if (state.isDraggingStarted(e)) {
-            state.onDragging(e); 
-        }
+    dndModels.forEach(dnd => {
+        dnd.stopDragging(e);
     });
 }
 
-
-const DraggableBuilder = (elements: NodeListOf<HTMLElement>, dragState: DragState) => { 
-    const addDropZone = DropZone; 
-    const onMouseDown = (e: MouseEvent) => { 
-        if (dragState.isDragging) {
-            return;
-        }
-        dragState.onMouseDownEvent(e);
-    }
-
-    const registerEvents = () => {
-        elements.forEach(element => {
-            element.addEventListener("mousedown", onMouseDown);
-        });
-    }
-
-    const initialize = () => {
-        registerEvents();
-    }
-
-    initialize();
-
-    return {
-        addDropZone
-    }
+const mouseMoveDragHandler = (e: MouseEvent) => {
+    dndModels.forEach(dnd => {
+        dnd.mouseMoved(e);
+    }); 
 }
 
+const dropBuilder = (domSelector: string, options?: DropOptions | null) => {
+    const actualOptions = Object.assign(initialDropOptions, options);
+    dndModels.forEach(model => model.addDrop(domSelector, actualOptions))
+}
+ 
+const dragBuilder = (domSelector: string, options?: DragOptions | null) => {
+    const elements = document.querySelectorAll<HTMLElement>(domSelector);
+    const actualOptions = Object.assign(initialDragOptions, options); 
+    elements.forEach(element => { 
+        const dndModel = new DnDModel(element, actualOptions);
+        dndModels.push(dndModel);
+    }); 
+
+    return {
+        drop: dropBuilder
+    }
+}
+ 
 const initialize = () => {
     document.addEventListener("mouseup", mouseUpDragHandler);
     document.addEventListener("mousemove", mouseMoveDragHandler);
@@ -49,16 +40,6 @@ const initialize = () => {
 
 initialize();
 
-export const Draggable = (domSelector: string, options?: DragOptions | null) => {
-    const elements = document.querySelectorAll<HTMLElement>(domSelector);
-    const actualOptions = Object.assign(InitialDragOptions, options);
-    const dragState = new DragState(actualOptions);
-    dragStates.push(dragState);
-
-    return DraggableBuilder(elements, dragState);
-}
-
-const DropZone = (domSelector: string, options?: DropZoneOptions | null) => {
-    const actualOptions = Object.assign(initialDropZoneOptions, options);
-    dragStates.forEach(dragState => dragState.addDropZone(domSelector, actualOptions))
-}
+export const Laforce = {
+    drag: dragBuilder
+};

@@ -1,7 +1,9 @@
+import { onDragEndFunction, onDraggingFunction, onDragStartFunction } from "./types";
+
 export interface DragListeners{
-    onDragStart?: (e: MouseEvent, originalMouseDownEvent: MouseEvent) => void;
-    onDragEnd?: (e: MouseEvent, originalMouseDownEvent: MouseEvent) => void;
-    onDragging?: (dragEvent: MouseEvent, originalMouseDownEvent: MouseEvent) => void;
+    onDragStart?: onDragStartFunction;
+    onDragEnd?: onDragEndFunction;
+    onDragging?:onDraggingFunction;
 }
 
 export interface DropListeners{
@@ -27,9 +29,9 @@ export interface Coordinates {
     Y: number;
 }
 
-export const initialDropZoneOptions : DropZoneOptions = { 
+export const initialDropZoneOptions : DropOptions = { 
     dropListeners: null
 }
-export interface DropZoneOptions{
+export interface DropOptions{
     dropListeners: DropListeners | null;
 }
